@@ -21,7 +21,8 @@ BEGIN {
 use strict;
 use warnings;
 use Test::More;
-plan tests => 6;
+#plan tests => 6;
+plan tests => 7;
 
 use Net::HTTP;
 
@@ -32,6 +33,8 @@ my $s = Net::HTTP->new(
     PeerHTTPVersion => "1.1",
     MaxLineLength   => 512
 ) || die "$@";
+
+isa_ok($s, 'IO::Socket::IP');
 
 for ( 1 .. 2 ) {
     $s->write_request(

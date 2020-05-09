@@ -3,7 +3,8 @@ use warnings;
 use Test::More;
 plan skip_all => "This test doesn't work on Windows" if $^O eq "MSWin32";
 
-plan tests => 14;
+#plan tests => 14;
+plan tests => 15;
 
 require Net::HTTP::NB;
 use IO::Socket::INET;
@@ -24,8 +25,11 @@ my %lopts = (
 my $srv = IO::Socket::INET->new(%lopts);
 is(ref($srv), "IO::Socket::INET");
 my $host = $srv->sockhost . ':' . $srv->sockport;
+our $SOCKET_CLASS = 'IO::Socket::INET';
 my $nb = Net::HTTP::NB->new(Host => $host, Blocking => 0);
 is(ref($nb), "Net::HTTP::NB");
+#isa_ok($nb, 'IO::Socket::IP');
+isa_ok($nb, 'IO::Socket::INET');
 is(IO::Select->new($nb)->can_write(3), 1);
 
 ok($nb->write_request("GET", "/"));
